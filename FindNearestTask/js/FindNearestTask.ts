@@ -7,6 +7,7 @@ import Point = require("esri/geometry/Point");
 import Geometry = require("esri/geometry/Geometry");
 import FeatureSet = require("esri/tasks/FeatureSet");
 import mathUtils = require("esri/geometry/mathUtils");
+import geometryEngine = require("esri/geometry/geometryEngine");
 import Graphic = require("esri/graphic");
 
 import FindNearestTaskOptions = require("./FindNearestTaskOptions");
