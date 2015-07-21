@@ -9,10 +9,10 @@
 
     <script type="text/javascript">
         var dojoConfig = {
-            async: true, // Allow AMD
+            async: true,
             packages: [{
                 name: "app",
-                location: location.pathname.replace(/\/[^/]+$/, "/js")
+                location: "/js"
             }]
         };
     </script>
@@ -105,8 +105,8 @@
                           ), new Color([255, 255, 0, 0.25])
                         ),
                         locationSymbol = new SimpleMarkerSymbol(
-                            SimpleMarkerSymbol.STYLE_CROSS, 40,
-                            new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([105, 105, 105]), 2));
+                            SimpleMarkerSymbol.STYLE_CROSS, 60,
+                            new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 4));
 
                     query.where = "1=1"; // Get everything
                     query.geometry = new Circle({
@@ -161,8 +161,8 @@
                         var np = result.point,
                             nf = result.feature,
                             npInfo = "Nearest Point: " + number.round(np.x) + "," + number.round(np.y),
-                            nfInfo = "Nearest ObjectID: " + nf.attributes.objectid,
-                            distInfo = "Distance: " + number.round(result.distance, 1) + "m";
+                            nfInfo = "Nearest Feature ObjectID: " + nf.attributes.objectid,
+                            distInfo = "Distance: " + number.round(result.distance, 1) + "m from click point";
 
                         domAttr.set("info", { "innerHTML": npInfo + "<br/>" + nfInfo + "<br/>" + distInfo });
                     });

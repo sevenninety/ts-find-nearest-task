@@ -37,7 +37,7 @@ class FindNearestTask {
 
     private _getNearestResult(point: Point, featureSet: FeatureSet) {
         var features: Graphic[] = featureSet.features;
-        var distance = this._mode == Mode.Geodesic ? this._greatCircleDistance : this._euclidianDistance;
+        var distance = this._mode == Mode.Geodesic ? this._geodesicDistance : this._planarDistance;
         var candidates: Array<Candidate> = new Array<Candidate>();
         var geometry;
         var result;
@@ -180,11 +180,11 @@ class FindNearestTask {
         return new Candidate(new Point(x, y, point.spatialReference), parentFeature, minDistance);
     }
 
-    private _euclidianDistance(p1: Point, p2: Point): number {
+    private _planarDistance(p1: Point, p2: Point): number {
         return mathUtils.getLength(p1, p2);
     }
 
-    private _greatCircleDistance(p1: Point, p2: Point): number {
+    private _geodesicDistance(p1: Point, p2: Point): number {
         // Haversine formula (http://www.movable-type.co.uk/scripts/latlong.html)
         var toRad = this._toRad,
             radius = 6371, // Earth's mean radius in km

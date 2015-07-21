@@ -16,7 +16,7 @@ define(["require", "exports", "dojo/Deferred", "esri/geometry/Point", "esri/geom
         };
         FindNearestTask.prototype._getNearestResult = function (point, featureSet) {
             var features = featureSet.features;
-            var distance = this._mode == 1 /* Geodesic */ ? this._greatCircleDistance : this._euclidianDistance;
+            var distance = this._mode == 1 /* Geodesic */ ? this._geodesicDistance : this._planarDistance;
             var candidates = new Array();
             var geometry;
             var result;
@@ -120,10 +120,10 @@ define(["require", "exports", "dojo/Deferred", "esri/geometry/Point", "esri/geom
             }
             return new Candidate(new Point(x, y, point.spatialReference), parentFeature, minDistance);
         };
-        FindNearestTask.prototype._euclidianDistance = function (p1, p2) {
+        FindNearestTask.prototype._planarDistance = function (p1, p2) {
             return mathUtils.getLength(p1, p2);
         };
-        FindNearestTask.prototype._greatCircleDistance = function (p1, p2) {
+        FindNearestTask.prototype._geodesicDistance = function (p1, p2) {
             var toRad = this._toRad, radius = 6371, lat1 = toRad(p1.y), lon1 = toRad(p1.x), lat2 = toRad(p2.y), lon2 = toRad(p2.x), dLat = lat2 - lat1, dLon = lon2 - lon1, a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2), c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             return radius * c;
         };
