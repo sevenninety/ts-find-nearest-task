@@ -16,13 +16,14 @@
             }]
         };
     </script>
+
     <script src="//js.arcgis.com/3.14/"></script>
+
     <script>
         require([
             "dojo/dom",
             "dojo/dom-attr",
             "dojo/dom-construct",
-            "dojo/number",
             "dojo/_base/Color",
             "dojo/on",
             "esri/map",
@@ -33,16 +34,13 @@
             "esri/symbols/SimpleFillSymbol",
             "esri/geometry/Circle",
             "esri/tasks/query",
-            "esri/tasks/QueryTask",
             "esri/units",
             "esri/toolbars/draw",
-            "app/FindNearestTask",
             "dojo/domReady!"],
             function (
-                dom, domAttr, domConstruct, number, Color, on,
+                dom, domAttr, domConstruct, Color, on,
                 Map, FeatureLayer, Graphic, SimpleLineSymbol, SimpleMarkerSymbol, SimpleFillSymbol,
-                Circle, Query, QueryTask, Units, Draw,
-                FindNearestTask) {
+                Circle, Query, Units, Draw) {
                 "use strict";
                 // Declare variables
                 var featureLayer, map, toolbar;
@@ -133,37 +131,41 @@
                 }
 
                 function findNearest(point, featureSet) {
-                    var task = new FindNearestTask({
-                        maxFeatures: 1 // Return nearest feature only
-                    }), params = {
-                        point: point,
-                        featureSet: featureSet
-                    };
-                    task.execute(params).then(function (results) {
-                        // Handle result
-                        var query;
-                        if (results && results.length > 0) {
-                            // Show result information
-                            showInfo(results[0]);
-                            // Select the nearest feature
-                            query = new Query();
-                            //query.geometry = result.nearestFeature.geometry;
-                            query.objectIds = [results[0].feature.attributes.objectid];
-                            featureLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
-                        }
-                    }).otherwise(function (err) {
-                        console.error(err.message);
+                    require(["app/FindNearestTask"], function (FindNearestTask) {
+                        var task = new FindNearestTask({
+                            maxFeatures: 1 // Return nearest feature only
+                        }), params = {
+                            point: point,
+                            featureSet: featureSet
+                        };
+                        task.execute(params).then(function (results) {
+                            // Handle result
+                            var query;
+                            if (results && results.length > 0) {
+                                // Show result information
+                                showInfo(results[0]);
+                                // Select the nearest feature
+                                query = new Query();
+                                //query.geometry = result.nearestFeature.geometry;
+                                query.objectIds = [results[0].feature.attributes.objectid];
+                                featureLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
+                            }
+                        }).otherwise(function (err) {
+                            console.error(err.message);
+                        });
                     });
                 }
 
                 function showInfo(result) {
-                    var np = result.point,
-                        nf = result.feature,
-                        npInfo = "Nearest Point: " + number.round(np.x) + "," + number.round(np.y),
-                        nfInfo = "Nearest ObjectID: " + nf.attributes.objectid,
-                        distInfo = "Distance: " + number.round(result.distance, 1) + "m";
+                    require(["dojo/number"], function(number){
+                        var np = result.point,
+                            nf = result.feature,
+                            npInfo = "Nearest Point: " + number.round(np.x) + "," + number.round(np.y),
+                            nfInfo = "Nearest ObjectID: " + nf.attributes.objectid,
+                            distInfo = "Distance: " + number.round(result.distance, 1) + "m";
 
-                    domAttr.set("info", { "innerHTML": npInfo + "<br/>" + nfInfo + "<br/>" + distInfo });
+                        domAttr.set("info", { "innerHTML": npInfo + "<br/>" + nfInfo + "<br/>" + distInfo });
+                    });
                 }
             }
         );
