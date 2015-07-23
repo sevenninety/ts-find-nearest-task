@@ -1,1 +1,1 @@
-{"version":3,"file":"DistanceMode.js","sourceRoot":"","sources":["DistanceMode.ts"],"names":["Mode"],"mappings":";IAAA,IAAK,IAGJ;IAHD,WAAK,IAAI;QACLA,mCAAMA;QACNA,uCAAQA;IACZA,CAACA,EAHI,IAAI,KAAJ,IAAI,QAGR;IAEa,AAAd,OAAS,IAAI,CAAC"}
+{"version":3,"file":"DistanceMode.js","sourceRoot":"","sources":["DistanceMode.ts"],"names":["Mode"],"mappings":";IAAA,IAAK,IAGJ;IAHD,WAAK,IAAI;QACLA,mCAAMA,CAAAA;QACNA,uCAAQA,CAAAA;IACZA,CAACA,EAHI,IAAI,KAAJ,IAAI,QAGR;IAEa,AAAd,OAAS,IAAI,CAAC"}

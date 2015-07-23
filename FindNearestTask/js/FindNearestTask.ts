@@ -23,7 +23,7 @@ class FindNearestTask {
         this._mode = options.mode || Mode.Planar;
     }
 
-    execute(params: FindNearestTaskParams): dojo.promise.Promise {
+    execute(params: FindNearestTaskParams): dojo.promise.Promise<Candidate[]> {
         var deferred = new Deferred();
 
         try {
@@ -35,12 +35,12 @@ class FindNearestTask {
         return deferred.promise;
     }
 
-    private _getNearestResult(point: Point, featureSet: FeatureSet) {
+    private _getNearestResult(point: Point, featureSet: FeatureSet): Candidate[] {
         var features: Graphic[] = featureSet.features;
         var distance = this._mode == Mode.Geodesic ? this._geodesicDistance : this._planarDistance;
         var candidates: Array<Candidate> = new Array<Candidate>();
         var geometry;
-        var result;
+        var result: Candidate[];
 
         // Supported in 10.1 or greater
         if (featureSet.exceededTransferLimit && featureSet.exceededTransferLimit === true) {

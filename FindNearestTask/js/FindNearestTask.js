@@ -1,8 +1,10 @@
+/// <reference path="dojo.d.ts" />
+/// <reference path="arcgis-js-api.d.ts" />
 define(["require", "exports", "dojo/Deferred", "esri/geometry/Point", "esri/geometry/mathUtils", "./Candidate", "./DistanceMode", "./PathPoint"], function (require, exports, Deferred, Point, mathUtils, Candidate, Mode, PathPoint) {
     var FindNearestTask = (function () {
         function FindNearestTask(options) {
             this._maxFeatures = options.maxFeatures || 10;
-            this._mode = options.mode || 0 /* Planar */;
+            this._mode = options.mode || Mode.Planar;
         }
         FindNearestTask.prototype.execute = function (params) {
             var deferred = new Deferred();
@@ -16,7 +18,7 @@ define(["require", "exports", "dojo/Deferred", "esri/geometry/Point", "esri/geom
         };
         FindNearestTask.prototype._getNearestResult = function (point, featureSet) {
             var features = featureSet.features;
-            var distance = this._mode == 1 /* Geodesic */ ? this._geodesicDistance : this._planarDistance;
+            var distance = this._mode == Mode.Geodesic ? this._geodesicDistance : this._planarDistance;
             var candidates = new Array();
             var geometry;
             var result;
